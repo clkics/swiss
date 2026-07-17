@@ -1,0 +1,1782 @@
+{
+  "version": "4.0",
+  "game": "시시태태공장장",
+  "notes": [
+    "일반카드: 단어 자체의 발음 꼬임이 난이도의 핵심. 성인/15세는 인터넷 경험담(인스티즈, 루리웹, 절대음감 놀이)에서 수집한 실제 어려운 단어 + 난이도 공식(ㅡ+ㄹ연속, 격음경음교차, 유사음절반복, 외래어ㅍㅊ연쇄)으로 창작한 단어.",
+    "함정카드(파란카드): 원본 단어의 블록 어순을 뒤섞은 것. 예: 검은색반팔티 → 반팔색검은티. 자리가 바뀐 블록의 모든 글자 위에 점 표시 — 앞으로 온 블록은 파란점(blueDots), 뒤로 간 블록은 빨간점(redDots). base는 원본(화면 비노출).",
+    "emoji는 프로토타입용 이미지 플레이스홀더. 정식 버전은 일러스트로 교체.",
+    "age5는 TTS로 읽어주며 현재 카드 하이라이트 → 따라 말하기.",
+    "누적 읽기: 뒤집힌 카드는 판에 쌓이고, 자기 차례에 1번부터 새 카드까지 전부 읽는다.",
+    "제한시간 = perCardSec × 판 카드 수. 전문가 모드는 ×0.7. age5는 시간 무제한.",
+    "라운드: 실패하면 판의 카드 전부를 벌점으로 가져가고 판을 비운다. boardCap 도달 상태에서 성공하면 라운드 클리어(판 정리, 벌점 없음). 게임 종료 시 벌점 카드가 가장 적은 사람이 승리.",
+    "age5: 판 상한 8장 + 카드 항상 대형(그림 필수 노출). TTS가 판 전체를 순서대로 읽어주며 현재 카드 하이라이트.",
+    "v4.0: 게임명 시시태태공장장으로 변경. 7세 추가(TTS 동일, 단어 난이도 상향). 판 최대 15장 통일, 한 줄 5장 배치."
+  ],
+  "ageSettings": {
+    "age5": {
+      "label": "5세",
+      "tts": true,
+      "highlight": true,
+      "imageRequired": true,
+      "perCardSec": null,
+      "boardCap": 15,
+      "cardSize": "large"
+    },
+    "age7": {
+      "label": "7세",
+      "perCardSec": null,
+      "boardCap": 15,
+      "cardSize": "large",
+      "tts": true,
+      "highlight": true,
+      "imageRequired": true
+    },
+    "age10": {
+      "label": "10세",
+      "tts": false,
+      "highlight": false,
+      "imageRequired": false,
+      "perCardSec": 5,
+      "boardCap": 15,
+      "cardSize": "auto"
+    },
+    "age15": {
+      "label": "15세",
+      "tts": false,
+      "highlight": false,
+      "imageRequired": false,
+      "perCardSec": 3.5,
+      "boardCap": 15,
+      "cardSize": "auto"
+    },
+    "adult": {
+      "label": "성인",
+      "tts": false,
+      "highlight": false,
+      "imageRequired": false,
+      "perCardSec": 2.5,
+      "boardCap": 15,
+      "cardSize": "auto"
+    }
+  },
+  "modes": {
+    "basic": {
+      "label": "기본",
+      "cards": [
+        "normal"
+      ]
+    },
+    "advanced": {
+      "label": "심화",
+      "cards": [
+        "normal",
+        "trap"
+      ]
+    },
+    "expert": {
+      "label": "전문가",
+      "cards": [
+        "normal",
+        "trap",
+        "special"
+      ],
+      "timeMultiplier": 0.7
+    }
+  },
+  "specialCards": [
+    {
+      "id": "reverse",
+      "name": "방향전환",
+      "count": 2,
+      "emoji": "🔄",
+      "effect": "진행 방향이 반대로 바뀐다"
+    },
+    {
+      "id": "encore",
+      "name": "한번더",
+      "count": 2,
+      "emoji": "🔁",
+      "effect": "직전 카드를 다음 차례 사람이 한 번 더 읽는다"
+    },
+    {
+      "id": "pass",
+      "name": "패스",
+      "count": 2,
+      "emoji": "⏭️",
+      "effect": "자기 차례를 다음 사람에게 넘긴다"
+    },
+    {
+      "id": "together",
+      "name": "다같이",
+      "count": 2,
+      "emoji": "📣",
+      "effect": "전원이 동시에 다음 카드를 읽는다. 가장 늦거나 틀린 사람이 벌점"
+    }
+  ],
+  "ages": {
+    "age5": {
+      "normal": [
+        {
+          "text": "사과",
+          "emoji": "🍎"
+        },
+        {
+          "text": "바나나",
+          "emoji": "🍌"
+        },
+        {
+          "text": "포도",
+          "emoji": "🍇"
+        },
+        {
+          "text": "수박",
+          "emoji": "🍉"
+        },
+        {
+          "text": "딸기",
+          "emoji": "🍓"
+        },
+        {
+          "text": "토마토",
+          "emoji": "🍅"
+        },
+        {
+          "text": "당근",
+          "emoji": "🥕"
+        },
+        {
+          "text": "옥수수",
+          "emoji": "🌽"
+        },
+        {
+          "text": "고구마",
+          "emoji": "🍠"
+        },
+        {
+          "text": "버섯",
+          "emoji": "🍄"
+        },
+        {
+          "text": "코끼리",
+          "emoji": "🐘"
+        },
+        {
+          "text": "기린",
+          "emoji": "🦒"
+        },
+        {
+          "text": "사자",
+          "emoji": "🦁"
+        },
+        {
+          "text": "호랑이",
+          "emoji": "🐯"
+        },
+        {
+          "text": "토끼",
+          "emoji": "🐰"
+        },
+        {
+          "text": "거북이",
+          "emoji": "🐢"
+        },
+        {
+          "text": "펭귄",
+          "emoji": "🐧"
+        },
+        {
+          "text": "돌고래",
+          "emoji": "🐬"
+        },
+        {
+          "text": "문어",
+          "emoji": "🐙"
+        },
+        {
+          "text": "나비",
+          "emoji": "🦋"
+        },
+        {
+          "text": "꿀벌",
+          "emoji": "🐝"
+        },
+        {
+          "text": "병아리",
+          "emoji": "🐤"
+        },
+        {
+          "text": "강아지",
+          "emoji": "🐶"
+        },
+        {
+          "text": "고양이",
+          "emoji": "🐱"
+        },
+        {
+          "text": "다람쥐",
+          "emoji": "🐿️"
+        },
+        {
+          "text": "원숭이",
+          "emoji": "🐵"
+        },
+        {
+          "text": "하마",
+          "emoji": "🦛"
+        },
+        {
+          "text": "악어",
+          "emoji": "🐊"
+        },
+        {
+          "text": "상어",
+          "emoji": "🦈"
+        },
+        {
+          "text": "비행기",
+          "emoji": "✈️"
+        },
+        {
+          "text": "자동차",
+          "emoji": "🚗"
+        },
+        {
+          "text": "버스",
+          "emoji": "🚌"
+        },
+        {
+          "text": "기차",
+          "emoji": "🚂"
+        },
+        {
+          "text": "소방차",
+          "emoji": "🚒"
+        },
+        {
+          "text": "경찰차",
+          "emoji": "🚓"
+        },
+        {
+          "text": "자전거",
+          "emoji": "🚲"
+        },
+        {
+          "text": "로켓",
+          "emoji": "🚀"
+        },
+        {
+          "text": "헬리콥터",
+          "emoji": "🚁"
+        },
+        {
+          "text": "우산",
+          "emoji": "☂️"
+        },
+        {
+          "text": "무지개",
+          "emoji": "🌈"
+        },
+        {
+          "text": "눈사람",
+          "emoji": "⛄"
+        },
+        {
+          "text": "별똥별",
+          "emoji": "🌠"
+        },
+        {
+          "text": "구름",
+          "emoji": "☁️"
+        },
+        {
+          "text": "나무",
+          "emoji": "🌳"
+        },
+        {
+          "text": "바다",
+          "emoji": "🌊"
+        },
+        {
+          "text": "도넛",
+          "emoji": "🍩"
+        },
+        {
+          "text": "케이크",
+          "emoji": "🍰"
+        },
+        {
+          "text": "피자",
+          "emoji": "🍕"
+        },
+        {
+          "text": "김밥",
+          "emoji": "🍙"
+        },
+        {
+          "text": "우유",
+          "emoji": "🥛"
+        }
+      ],
+      "trap": [
+        {
+          "text": "리끼코",
+          "base": "코끼리",
+          "emoji": "🐘",
+          "blueDots": [
+            0
+          ],
+          "redDots": [
+            2
+          ]
+        },
+        {
+          "text": "나바나",
+          "base": "바나나",
+          "emoji": "🍌",
+          "blueDots": [
+            0
+          ],
+          "redDots": [
+            1
+          ]
+        },
+        {
+          "text": "개지무",
+          "base": "무지개",
+          "emoji": "🌈",
+          "blueDots": [
+            0
+          ],
+          "redDots": [
+            2
+          ]
+        },
+        {
+          "text": "차동자",
+          "base": "자동차",
+          "emoji": "🚗",
+          "blueDots": [
+            0
+          ],
+          "redDots": [
+            2
+          ]
+        },
+        {
+          "text": "기행비",
+          "base": "비행기",
+          "emoji": "✈️",
+          "blueDots": [
+            0
+          ],
+          "redDots": [
+            2
+          ]
+        },
+        {
+          "text": "사람눈",
+          "base": "눈사람",
+          "emoji": "⛄",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2
+          ]
+        },
+        {
+          "text": "지아강",
+          "base": "강아지",
+          "emoji": "🐶",
+          "blueDots": [
+            0
+          ],
+          "redDots": [
+            2
+          ]
+        },
+        {
+          "text": "이양고",
+          "base": "고양이",
+          "emoji": "🐱",
+          "blueDots": [
+            0
+          ],
+          "redDots": [
+            2
+          ]
+        },
+        {
+          "text": "차방소",
+          "base": "소방차",
+          "emoji": "🚒",
+          "blueDots": [
+            0
+          ],
+          "redDots": [
+            2
+          ]
+        },
+        {
+          "text": "이북거",
+          "base": "거북이",
+          "emoji": "🐢",
+          "blueDots": [
+            0
+          ],
+          "redDots": [
+            2
+          ]
+        }
+      ]
+    },
+    "age7": {
+      "normal": [
+        {
+          "text": "깡충깡충",
+          "emoji": "🐰"
+        },
+        {
+          "text": "반짝반짝",
+          "emoji": "✨"
+        },
+        {
+          "text": "데굴데굴",
+          "emoji": "⚽"
+        },
+        {
+          "text": "뒤뚱뒤뚱",
+          "emoji": "🐧"
+        },
+        {
+          "text": "폴짝폴짝",
+          "emoji": "🦘"
+        },
+        {
+          "text": "살금살금",
+          "emoji": "🐱"
+        },
+        {
+          "text": "방글방글",
+          "emoji": "😊"
+        },
+        {
+          "text": "소곤소곤",
+          "emoji": "🤫"
+        },
+        {
+          "text": "딸랑딸랑",
+          "emoji": "🔔"
+        },
+        {
+          "text": "부릉부릉",
+          "emoji": "🚗"
+        },
+        {
+          "text": "칙칙폭폭",
+          "emoji": "🚂"
+        },
+        {
+          "text": "둥실둥실",
+          "emoji": "🎈"
+        },
+        {
+          "text": "넘실넘실",
+          "emoji": "🌊"
+        },
+        {
+          "text": "콩닥콩닥",
+          "emoji": "💓"
+        },
+        {
+          "text": "두근두근",
+          "emoji": "💗"
+        },
+        {
+          "text": "아장아장",
+          "emoji": "👶"
+        },
+        {
+          "text": "엉금엉금",
+          "emoji": "🐢"
+        },
+        {
+          "text": "팔랑팔랑",
+          "emoji": "🦋"
+        },
+        {
+          "text": "쫑긋쫑긋",
+          "emoji": "🐇"
+        },
+        {
+          "text": "촐랑촐랑",
+          "emoji": "🐕"
+        },
+        {
+          "text": "첨벙첨벙",
+          "emoji": "💦"
+        },
+        {
+          "text": "퐁당퐁당",
+          "emoji": "💧"
+        },
+        {
+          "text": "보글보글",
+          "emoji": "🍲"
+        },
+        {
+          "text": "지글지글",
+          "emoji": "🍳"
+        },
+        {
+          "text": "바삭바삭",
+          "emoji": "🍪"
+        },
+        {
+          "text": "냠냠쩝쩝",
+          "emoji": "😋"
+        },
+        {
+          "text": "후루룩국수",
+          "emoji": "🍜"
+        },
+        {
+          "text": "아삭아삭",
+          "emoji": "🥒"
+        },
+        {
+          "text": "물렁물렁",
+          "emoji": "🍑"
+        },
+        {
+          "text": "미끌미끌",
+          "emoji": "🧼"
+        },
+        {
+          "text": "꼬물꼬물",
+          "emoji": "🐛"
+        },
+        {
+          "text": "꿈틀꿈틀",
+          "emoji": "🪱"
+        },
+        {
+          "text": "파닥파닥",
+          "emoji": "🐟"
+        },
+        {
+          "text": "뻐끔뻐끔",
+          "emoji": "🐠"
+        },
+        {
+          "text": "삐약삐약",
+          "emoji": "🐥"
+        },
+        {
+          "text": "꼬끼오닭",
+          "emoji": "🐓"
+        },
+        {
+          "text": "구구비둘기",
+          "emoji": "🕊️"
+        },
+        {
+          "text": "멍멍강아지",
+          "emoji": "🐶"
+        },
+        {
+          "text": "꿀꿀돼지",
+          "emoji": "🐷"
+        },
+        {
+          "text": "음매송아지",
+          "emoji": "🐮"
+        },
+        {
+          "text": "개굴개굴",
+          "emoji": "🐸"
+        },
+        {
+          "text": "씽씽자전거",
+          "emoji": "🚲"
+        },
+        {
+          "text": "슝슝로켓",
+          "emoji": "🚀"
+        },
+        {
+          "text": "뭉게구름",
+          "emoji": "☁️"
+        },
+        {
+          "text": "솜사탕가게",
+          "emoji": "🍭"
+        },
+        {
+          "text": "곱슬머리",
+          "emoji": "💇"
+        },
+        {
+          "text": "종알종알",
+          "emoji": "🗣️"
+        },
+        {
+          "text": "재잘재잘",
+          "emoji": "🐦"
+        },
+        {
+          "text": "동글조약돌",
+          "emoji": "🪨"
+        },
+        {
+          "text": "쓱싹쓱싹",
+          "emoji": "🪥"
+        }
+      ],
+      "trap": [
+        {
+          "text": "국수후루룩",
+          "base": "후루룩국수",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3,
+            4
+          ],
+          "emoji": "🍜"
+        },
+        {
+          "text": "자전거씽씽",
+          "base": "씽씽자전거",
+          "blueDots": [
+            0,
+            1,
+            2
+          ],
+          "redDots": [
+            3,
+            4
+          ],
+          "emoji": "🚲"
+        },
+        {
+          "text": "강아지멍멍",
+          "base": "멍멍강아지",
+          "blueDots": [
+            0,
+            1,
+            2
+          ],
+          "redDots": [
+            3,
+            4
+          ],
+          "emoji": "🐶"
+        },
+        {
+          "text": "돼지꿀꿀",
+          "base": "꿀꿀돼지",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ],
+          "emoji": "🐷"
+        },
+        {
+          "text": "송아지음매",
+          "base": "음매송아지",
+          "blueDots": [
+            0,
+            1,
+            2
+          ],
+          "redDots": [
+            3,
+            4
+          ],
+          "emoji": "🐮"
+        },
+        {
+          "text": "닭꼬끼오",
+          "base": "꼬끼오닭",
+          "blueDots": [
+            0
+          ],
+          "redDots": [
+            1,
+            2,
+            3
+          ],
+          "emoji": "🐓"
+        },
+        {
+          "text": "비둘기구구",
+          "base": "구구비둘기",
+          "blueDots": [
+            0,
+            1,
+            2
+          ],
+          "redDots": [
+            3,
+            4
+          ],
+          "emoji": "🕊️"
+        },
+        {
+          "text": "가게솜사탕",
+          "base": "솜사탕가게",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3,
+            4
+          ],
+          "emoji": "🍭"
+        },
+        {
+          "text": "구름뭉게",
+          "base": "뭉게구름",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ],
+          "emoji": "☁️"
+        },
+        {
+          "text": "로켓슝슝",
+          "base": "슝슝로켓",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ],
+          "emoji": "🚀"
+        }
+      ]
+    },
+    "age10": {
+      "normal": [
+        {
+          "text": "건곤감리",
+          "emoji": "🇰🇷"
+        },
+        {
+          "text": "샘속송사리",
+          "emoji": "🐟"
+        },
+        {
+          "text": "간장공장",
+          "emoji": "🏭"
+        },
+        {
+          "text": "공장공장장",
+          "emoji": "👷"
+        },
+        {
+          "text": "콩깍지깍지",
+          "emoji": "🫛"
+        },
+        {
+          "text": "딸기찰떡",
+          "emoji": "🍓"
+        },
+        {
+          "text": "찹쌀찐빵",
+          "emoji": "🥟"
+        },
+        {
+          "text": "청포도풍선",
+          "emoji": "🎈"
+        },
+        {
+          "text": "삼각김밥상",
+          "emoji": "🍙"
+        },
+        {
+          "text": "김치찌개집",
+          "emoji": "🍲"
+        },
+        {
+          "text": "짬뽕찜닭",
+          "emoji": "🍜"
+        },
+        {
+          "text": "떡볶이볶기",
+          "emoji": "🍢"
+        },
+        {
+          "text": "산삼장수",
+          "emoji": "🌿"
+        },
+        {
+          "text": "솔숲산새",
+          "emoji": "🐦"
+        },
+        {
+          "text": "도둑돛단배",
+          "emoji": "⛵"
+        },
+        {
+          "text": "달콤딸기잼",
+          "emoji": "🫙"
+        },
+        {
+          "text": "병뚜껑뚜껑",
+          "emoji": "🍾"
+        },
+        {
+          "text": "꿀꺽꿀꺽",
+          "emoji": "🥤"
+        },
+        {
+          "text": "쑥쑥쑥갓",
+          "emoji": "🥬"
+        },
+        {
+          "text": "짹짹참새",
+          "emoji": "🐦"
+        },
+        {
+          "text": "까치깍깍",
+          "emoji": "🐦‍⬛"
+        },
+        {
+          "text": "콩콩콩나물",
+          "emoji": "🌱"
+        },
+        {
+          "text": "햅쌀쌀밥",
+          "emoji": "🍚"
+        },
+        {
+          "text": "뻥튀기튀김",
+          "emoji": "🍘"
+        },
+        {
+          "text": "꼬불꼬불길",
+          "emoji": "🛣️"
+        },
+        {
+          "text": "빙글뱅글",
+          "emoji": "🌀"
+        },
+        {
+          "text": "알록달록",
+          "emoji": "🌈"
+        },
+        {
+          "text": "울퉁불퉁길",
+          "emoji": "🚧"
+        },
+        {
+          "text": "얼룩덜룩",
+          "emoji": "🐄"
+        },
+        {
+          "text": "곰곰곰돌이",
+          "emoji": "🧸"
+        },
+        {
+          "text": "총총총각무",
+          "emoji": "🥕"
+        },
+        {
+          "text": "늠름낙타",
+          "emoji": "🐫"
+        },
+        {
+          "text": "낄낄깔깔",
+          "emoji": "😂"
+        },
+        {
+          "text": "씩씩쑥쑥",
+          "emoji": "💪"
+        },
+        {
+          "text": "짤랑잘랑",
+          "emoji": "🔔"
+        },
+        {
+          "text": "철렁출렁",
+          "emoji": "🌊"
+        },
+        {
+          "text": "파릇포릇",
+          "emoji": "🌿"
+        },
+        {
+          "text": "오돌토돌",
+          "emoji": "🥒"
+        },
+        {
+          "text": "우당탕탕",
+          "emoji": "💥"
+        },
+        {
+          "text": "곤드레나물",
+          "emoji": "🥬"
+        },
+        {
+          "text": "감자국감자",
+          "emoji": "🥔"
+        },
+        {
+          "text": "갓김치갓",
+          "emoji": "🥬"
+        },
+        {
+          "text": "굴국밥굴",
+          "emoji": "🦪"
+        },
+        {
+          "text": "낙지짬뽕",
+          "emoji": "🐙"
+        },
+        {
+          "text": "단짠단짠",
+          "emoji": "🍭"
+        },
+        {
+          "text": "새콤달콤",
+          "emoji": "🍬"
+        },
+        {
+          "text": "말랑몰랑",
+          "emoji": "🍡"
+        },
+        {
+          "text": "통통통닭",
+          "emoji": "🍗"
+        },
+        {
+          "text": "쫀득쫀득",
+          "emoji": "🍡"
+        },
+        {
+          "text": "짭짤한땅콩",
+          "emoji": "🥜"
+        }
+      ],
+      "trap": [
+        {
+          "text": "공장간장",
+          "base": "간장공장",
+          "emoji": "🏭",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        },
+        {
+          "text": "찰떡딸기",
+          "base": "딸기찰떡",
+          "emoji": "🍓",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        },
+        {
+          "text": "깍지콩깍지",
+          "base": "콩깍지깍지",
+          "emoji": "🫛",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "text": "달콤새콤",
+          "base": "새콤달콤",
+          "emoji": "🍬",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        },
+        {
+          "text": "탕탕우당",
+          "base": "우당탕탕",
+          "emoji": "💥",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        },
+        {
+          "text": "쌀밥햅쌀",
+          "base": "햅쌀쌀밥",
+          "emoji": "🍚",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        },
+        {
+          "text": "튀김뻥튀기",
+          "base": "뻥튀기튀김",
+          "emoji": "🍘",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "text": "곰돌이곰곰",
+          "base": "곰곰곰돌이",
+          "emoji": "🧸",
+          "blueDots": [
+            0,
+            1,
+            2
+          ],
+          "redDots": [
+            3,
+            4
+          ]
+        },
+        {
+          "text": "참새짹짹",
+          "base": "짹짹참새",
+          "emoji": "🐦",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        },
+        {
+          "text": "찐빵찹쌀",
+          "base": "찹쌀찐빵",
+          "emoji": "🥟",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    "age15": {
+      "normal": [
+        {
+          "text": "역삼역옆집",
+          "emoji": "🏠"
+        },
+        {
+          "text": "시내스시식당",
+          "emoji": "🍣"
+        },
+        {
+          "text": "꽃에꽂힌꽁치",
+          "emoji": "🐟"
+        },
+        {
+          "text": "경찰청창살",
+          "emoji": "🚔"
+        },
+        {
+          "text": "촉촉초코칩",
+          "emoji": "🍪"
+        },
+        {
+          "text": "안촉촉초코칩",
+          "emoji": "🍪"
+        },
+        {
+          "text": "신선한생선",
+          "emoji": "🐟"
+        },
+        {
+          "text": "청춘춘천행",
+          "emoji": "🚆"
+        },
+        {
+          "text": "법학박사",
+          "emoji": "🎓"
+        },
+        {
+          "text": "샤워실샤워",
+          "emoji": "🚿"
+        },
+        {
+          "text": "안양양념장",
+          "emoji": "🥫"
+        },
+        {
+          "text": "양양역양갱",
+          "emoji": "🍮"
+        },
+        {
+          "text": "척척박사",
+          "emoji": "🧑‍🎓"
+        },
+        {
+          "text": "칠월칠일밤",
+          "emoji": "🌌"
+        },
+        {
+          "text": "백합밭백합",
+          "emoji": "🌷"
+        },
+        {
+          "text": "솔잎숲산삼",
+          "emoji": "🌲"
+        },
+        {
+          "text": "햅쌀찹쌀떡",
+          "emoji": "🍡"
+        },
+        {
+          "text": "돌솥비빔밥",
+          "emoji": "🍚"
+        },
+        {
+          "text": "짧은짚신짝",
+          "emoji": "🥿"
+        },
+        {
+          "text": "붉은벽돌빛",
+          "emoji": "🧱"
+        },
+        {
+          "text": "검붉은껌값",
+          "emoji": "🍬"
+        },
+        {
+          "text": "꼬막깍두기",
+          "emoji": "🥘"
+        },
+        {
+          "text": "깻잎깻잎국",
+          "emoji": "🥬"
+        },
+        {
+          "text": "얇은약봉지",
+          "emoji": "💊"
+        },
+        {
+          "text": "옆문엿보기",
+          "emoji": "👀"
+        },
+        {
+          "text": "은행원연봉",
+          "emoji": "💰"
+        },
+        {
+          "text": "팥빙수빙수",
+          "emoji": "🍧"
+        },
+        {
+          "text": "솥뚜껑뚜껑",
+          "emoji": "🍳"
+        },
+        {
+          "text": "벚꽃빛봄밤",
+          "emoji": "🌸"
+        },
+        {
+          "text": "낮달낚시꾼",
+          "emoji": "🎣"
+        },
+        {
+          "text": "얄팍한약값",
+          "emoji": "💊"
+        },
+        {
+          "text": "튼튼통나무",
+          "emoji": "🪵"
+        },
+        {
+          "text": "씀바귀쌈밥",
+          "emoji": "🥗"
+        },
+        {
+          "text": "참치찹쌀죽",
+          "emoji": "🥣"
+        },
+        {
+          "text": "멸치말리기",
+          "emoji": "🐟"
+        },
+        {
+          "text": "놀란노루뿔",
+          "emoji": "🦌"
+        },
+        {
+          "text": "깐콩깍지",
+          "emoji": "🫛"
+        },
+        {
+          "text": "단팥빵팥빵",
+          "emoji": "🥐"
+        },
+        {
+          "text": "통찐빵찐빵",
+          "emoji": "🥟"
+        },
+        {
+          "text": "새우쌀과자",
+          "emoji": "🍤"
+        },
+        {
+          "text": "찹쌀누룽지",
+          "emoji": "🍘"
+        },
+        {
+          "text": "요구르트류",
+          "emoji": "🥛"
+        },
+        {
+          "text": "유리잔유리",
+          "emoji": "🥃"
+        },
+        {
+          "text": "의류수거함",
+          "emoji": "👕"
+        },
+        {
+          "text": "육회비빔밥",
+          "emoji": "🍚"
+        },
+        {
+          "text": "만두찐만두",
+          "emoji": "🥟"
+        },
+        {
+          "text": "꼬다리김밥",
+          "emoji": "🍙"
+        },
+        {
+          "text": "늴리리야",
+          "emoji": "🎶"
+        },
+        {
+          "text": "청단풍단풍",
+          "emoji": "🍁"
+        },
+        {
+          "text": "얽힌실타래",
+          "emoji": "🧶"
+        }
+      ],
+      "trap": [
+        {
+          "text": "초코촉촉칩",
+          "base": "촉촉초코칩",
+          "emoji": "🍪",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        },
+        {
+          "text": "생선한신선",
+          "base": "신선한생선",
+          "emoji": "🐟",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            3,
+            4
+          ]
+        },
+        {
+          "text": "창살청경찰",
+          "base": "경찰청창살",
+          "emoji": "🚔",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            3,
+            4
+          ]
+        },
+        {
+          "text": "박사법학",
+          "base": "법학박사",
+          "emoji": "🎓",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        },
+        {
+          "text": "옆집역역삼",
+          "base": "역삼역옆집",
+          "emoji": "🏠",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            3,
+            4
+          ]
+        },
+        {
+          "text": "연봉원은행",
+          "base": "은행원연봉",
+          "emoji": "💰",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            3,
+            4
+          ]
+        },
+        {
+          "text": "벽돌붉은빛",
+          "base": "붉은벽돌빛",
+          "emoji": "🧱",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        },
+        {
+          "text": "비빔솥돌밥",
+          "base": "돌솥비빔밥",
+          "emoji": "🍚",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            3
+          ]
+        },
+        {
+          "text": "빙수팥빙수",
+          "base": "팥빙수빙수",
+          "emoji": "🍧",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2
+          ]
+        },
+        {
+          "text": "수거의류함",
+          "base": "의류수거함",
+          "emoji": "👕",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    "adult": {
+      "normal": [
+        {
+          "text": "간장공장공장장",
+          "emoji": "🏭"
+        },
+        {
+          "text": "왕밤빵",
+          "emoji": "🥐"
+        },
+        {
+          "text": "홍합왕밤빵",
+          "emoji": "🦪"
+        },
+        {
+          "text": "로얄뉴로얄",
+          "emoji": "🚗"
+        },
+        {
+          "text": "대우로얄뉴로얄",
+          "emoji": "🚙"
+        },
+        {
+          "text": "확률분포표",
+          "emoji": "📊"
+        },
+        {
+          "text": "영동용봉탕",
+          "emoji": "🍲"
+        },
+        {
+          "text": "척추측만증",
+          "emoji": "🦴"
+        },
+        {
+          "text": "돌산갓김치",
+          "emoji": "🥬"
+        },
+        {
+          "text": "남내리미나리",
+          "emoji": "🌿"
+        },
+        {
+          "text": "꿩잎볶음쌈",
+          "emoji": "🥬"
+        },
+        {
+          "text": "단팥맛통찐빵",
+          "emoji": "🥟"
+        },
+        {
+          "text": "표준규격품",
+          "emoji": "📏"
+        },
+        {
+          "text": "철수책상철책상",
+          "emoji": "🪑"
+        },
+        {
+          "text": "시골찹쌀햇찹쌀",
+          "emoji": "🌾"
+        },
+        {
+          "text": "도시찹쌀촌찹쌀",
+          "emoji": "🍚"
+        },
+        {
+          "text": "신진샹숑가수",
+          "emoji": "🎤"
+        },
+        {
+          "text": "신춘샹숑쇼우",
+          "emoji": "🎭"
+        },
+        {
+          "text": "챠프포프킨",
+          "emoji": "🪆"
+        },
+        {
+          "text": "치스챠코프",
+          "emoji": "🪆"
+        },
+        {
+          "text": "라흐마니노프",
+          "emoji": "🎹"
+        },
+        {
+          "text": "스르프스카",
+          "emoji": "🗺️"
+        },
+        {
+          "text": "크르클랄르",
+          "emoji": "🌀"
+        },
+        {
+          "text": "특허허가과",
+          "emoji": "📋"
+        },
+        {
+          "text": "미트소스소세지",
+          "emoji": "🌭"
+        },
+        {
+          "text": "스위스사는스미스",
+          "emoji": "🏔️"
+        },
+        {
+          "text": "점진적증폭",
+          "emoji": "📈"
+        },
+        {
+          "text": "물류유통량",
+          "emoji": "🚚"
+        },
+        {
+          "text": "육류유통업",
+          "emoji": "🥩"
+        },
+        {
+          "text": "유류분반환",
+          "emoji": "⚖️"
+        },
+        {
+          "text": "열역학법칙",
+          "emoji": "🔥"
+        },
+        {
+          "text": "폭발력측정",
+          "emoji": "💣"
+        },
+        {
+          "text": "압축팽창압",
+          "emoji": "🎈"
+        },
+        {
+          "text": "특촬물출연",
+          "emoji": "🦸"
+        },
+        {
+          "text": "굵직굵직",
+          "emoji": "🪵"
+        },
+        {
+          "text": "얇디얇은옷",
+          "emoji": "👗"
+        },
+        {
+          "text": "짧디짧은봄",
+          "emoji": "🌸"
+        },
+        {
+          "text": "넓둥근돌",
+          "emoji": "🪨"
+        },
+        {
+          "text": "밝힐밝기",
+          "emoji": "💡"
+        },
+        {
+          "text": "붉디붉은빛",
+          "emoji": "🔴"
+        },
+        {
+          "text": "닭볶음탕값",
+          "emoji": "🍗"
+        },
+        {
+          "text": "꿩샤브샤브",
+          "emoji": "🍲"
+        },
+        {
+          "text": "쭈꾸미쫄면",
+          "emoji": "🐙"
+        },
+        {
+          "text": "짬뽕맛땅콩빵",
+          "emoji": "🥜"
+        },
+        {
+          "text": "콩팥팥콩",
+          "emoji": "🫘"
+        },
+        {
+          "text": "흙받기받침",
+          "emoji": "🧱"
+        },
+        {
+          "text": "칡넝쿨칡즙",
+          "emoji": "🌿"
+        },
+        {
+          "text": "곶감꽃값",
+          "emoji": "🍂"
+        },
+        {
+          "text": "낚싯줄값",
+          "emoji": "🎣"
+        },
+        {
+          "text": "폐렴예방약",
+          "emoji": "💊"
+        }
+      ],
+      "trap": [
+        {
+          "text": "반팔색검은티",
+          "base": "검은색반팔티",
+          "emoji": "👕",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            3,
+            4
+          ]
+        },
+        {
+          "text": "분포확률표",
+          "base": "확률분포표",
+          "emoji": "📊",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        },
+        {
+          "text": "용봉영동탕",
+          "base": "영동용봉탕",
+          "emoji": "🍲",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        },
+        {
+          "text": "왕밤홍합빵",
+          "base": "홍합왕밤빵",
+          "emoji": "🦪",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        },
+        {
+          "text": "촌찹쌀도시찹쌀",
+          "base": "도시찹쌀촌찹쌀",
+          "emoji": "🍚",
+          "blueDots": [
+            0
+          ],
+          "redDots": [
+            3,
+            4
+          ]
+        },
+        {
+          "text": "통팥맛단찐빵",
+          "base": "단팥맛통찐빵",
+          "emoji": "🥟",
+          "blueDots": [
+            0
+          ],
+          "redDots": [
+            3
+          ]
+        },
+        {
+          "text": "측만척추증",
+          "base": "척추측만증",
+          "emoji": "🦴",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        },
+        {
+          "text": "샹숑신진가수",
+          "base": "신진샹숑가수",
+          "emoji": "🎤",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        },
+        {
+          "text": "뉴로얄로얄",
+          "base": "로얄뉴로얄",
+          "emoji": "🚗",
+          "blueDots": [
+            0
+          ],
+          "redDots": [
+            1,
+            2
+          ]
+        },
+        {
+          "text": "볶음꿩잎쌈",
+          "base": "꿩잎볶음쌈",
+          "emoji": "🥬",
+          "blueDots": [
+            0,
+            1
+          ],
+          "redDots": [
+            2,
+            3
+          ]
+        }
+      ]
+    }
+  }
+}
